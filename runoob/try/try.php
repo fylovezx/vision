@@ -2,8 +2,7 @@
 /**
  * 显示数据库中指定codename 的代码的效果，
  * 1.防止误入的措施
- *      判断是否存在$_POST["codename"]的值，
- *          如果没有，或者mysql中没有对应的值，则显示提示框并返回主页
+ *  无，则作为model练习
  * 2.运行流程
  *  根据$_POST["codename"]从mysql数据库中读取对应的code代码，
  *  显示在左侧代码展示区textarea中，并运行显示在右侧的代码显示区
@@ -21,40 +20,47 @@
 if(isset( $_GET["codename"])){
     $codename = $_GET["codename"];
 }else{
-    die("该代码不存在");
+    $codename = '未查询';
 }
 
-?>
+echo <<<theEnd
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>测试<?php echo $codename?></title>
+    <title>测试 $codename</title>
+    <script>
+    function accesskey(){
+      document.getElementById('btn-default').accessKey="y"
+      document.getElementById('btn-runing').accessKey="r"
+    }
+    </script>
 </head>
-<body>
+<body onload="accesskey()">
 <div id="container" style="width:1500px">
 
 <div id="header" style="background-color:#9ab488;">
     <h1 style="margin-bottom:0;">学习小站</h1>
 </div>
-
+theEnd;
+?>
 <div id="codearea" style="background-color:#e7e7e7;height:700px;width:700px;float:left;">
     <div id="codearea-heading">
         <div style="float:left">
-            <button type="button" onclick="resetCode()" class="btn btn-default">源代码：</button>
+            <button id="btn-default" type="button" onclick="resetCode()" class="btn btn-default">源代码(<u>Y</u>)</button>
         </div>
         <div style="float:right">
-            <button type="button" onclick="submitTryit()" id="submitBTN"><span class="glyphicon glyphicon-send"></span> 点击运行</button>
+            <button id="btn-runing" type="button" onclick="submitTryit()" id="submitBTN"><span class="glyphicon glyphicon-send"></span> 点击运行(<u>R</u>un)</button>
         </div>
     </div>
     <div>
         <?php
         include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';
         //include_once "../tools/conn.php";
-        setconnparm($conne,'root');
-        $rs= $conne->getRowsRst("select * from runoob.code");;
+        setconnparm($conne);
+        $rs= $conne->getRowsRst("select * from runoob.code where codename='".$codename."'");
         ?>
         <textarea id="textareaCode" rows="40" cols="80"><?php
         $replace = array("\\n");
