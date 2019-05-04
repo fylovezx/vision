@@ -20,7 +20,7 @@
 if(isset( $_GET["codename"])){
     $codename = $_GET["codename"];
 }else{
-    $codename = '未查询';
+    $codename = 'tryhtml_layout_divs';
 }
 
 echo <<<theEnd
@@ -60,7 +60,7 @@ theEnd;
         include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';
         //include_once "../tools/conn.php";
         setconnparm($conne);
-        $rs= $conne->getRowsRst("select * from runoob.code where codename='".$codename."'");
+        $rs= $conne->getRowsRst("select * from runoob.try where codename='".$codename."'");
         ?>
         <textarea id="textareaCode" rows="40" cols="80"><?php
         $replace = array("\\n");

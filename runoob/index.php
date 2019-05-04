@@ -126,8 +126,7 @@ learning;
 <div id="footer">
     <?php    
     include_once $_SERVER['DOCUMENT_ROOT'].'/tools/advergers.php'; givemewords($advergerswords,"Tony");
-    ?>
-    
+    ?>    
 </div>
 </footer>
 </body>
