@@ -5,24 +5,28 @@
  *  
  * 
  */
+
 if(isset($_POST['insertsf'])){
+    include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,'vsrbxr');
+    $db=$conne->getconneinfo('dBase'); 
     $sfname = $_POST['sfname'];
     $sfsnum = $_POST['sfsnum'];
     $idfr =1;
     $sql1= <<<transaction
-    UPDATE `runoob`.`shelf` SET `sfsnum` = `sfsnum`+1 WHERE `sfsnum` >=$sfsnum and `idfr`=$idfr;
-    INSERT INTO `runoob`.`shelf` (`sfname`, `idfr`, `sfsnum`) VALUES ('$sfname', $idfr, $sfsnum);
+    UPDATE `$db`.`shelf` SET `sfsnum` = `sfsnum`+1 WHERE `sfsnum` >=$sfsnum and `idfr`=$idfr;
+    INSERT INTO `$db`.`shelf` (`sfname`, `idfr`, `sfsnum`) VALUES ('$sfname', $idfr, $sfsnum);
 transaction;
     $sql2=str_replace("'","\'",$sql1);
     $sql= <<<transaction
     $sql1
-    INSERT INTO `runoob`.`syslog` (`mtime`, `sql`, `username`) VALUES (Now(), '$sql2', 'sys');
+    INSERT INTO `$db`.`syslog` (`mtime`, `sql`, `username`) VALUES (Now(), '$sql2', 'sys');
 transaction;
-echo $sql1."<br>\r\n";
-echo $sql2."<br>\r\n";
-echo $sql."<br>\r\n";
-include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne);
+include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
+getcmnt(array("runoob","sysindex"),$sql1);
+getcmnt(array("runoob","sysindex"),$sql2);
+getcmnt(array("runoob","sysindex"),$sql);
 
+$conne->close_conn();
 }
 
 ?>
@@ -35,13 +39,10 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>系统管理员</title>
     <script>
-        function changge(th){
-            document.getElementById("content").innerHTML=th.id;
-        }
-
         function changepage(th)
         {
             var xmlhttp;
+            cgbgcolor(th.id);
             if (window.XMLHttpRequest)
             {
                 //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
@@ -74,8 +75,8 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne);
 </head>
 <body>
     <div id="head">欢迎进入系统管理界面</div>
-    <div id="menu">
-        <span id="main"  onclick="changepage(this)">管理主页</span>
+    <div id="sysmenu">
+        <span id="opdb"  onclick="changepage(this)">管理数据库</span>
         <span id="addsf"  onclick="changepage(this)">添加书架</span>
         <span id="addbk" onclick="changepage(this)">添加书目</span>
         <span id="syslog" onclick="changepage(this)">操作日志</span>
@@ -104,6 +105,13 @@ document.getElementById("addsf").onclick();
 insertsf;
 }
 ?>
+<script>
+    function cgbgcolor(th){
+        document.getElementById(th).style.background =  '#c3d08d';
+        setTimeout(function(){ document.getElementById(th).style.background =  ''; }, 3000);
+    }
+    cgbgcolor('opdb');
+</script>
 
 </body>
 </html>
