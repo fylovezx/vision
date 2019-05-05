@@ -12,19 +12,20 @@ if(isset($_POST['insertsf'])){
     $sfname = $_POST['sfname'];
     $sfsnum = $_POST['sfsnum'];
     $idfr =1;
-    $sql1= <<<transaction
-    UPDATE `$db`.`shelf` SET `sfsnum` = `sfsnum`+1 WHERE `sfsnum` >=$sfsnum and `idfr`=$idfr;
-    INSERT INTO `$db`.`shelf` (`sfname`, `idfr`, `sfsnum`) VALUES ('$sfname', $idfr, $sfsnum);
-transaction;
-    $sql2=str_replace("'","\'",$sql1);
-    $sql= <<<transaction
-    $sql1
-    INSERT INTO `$db`.`syslog` (`mtime`, `sql`, `username`) VALUES (Now(), '$sql2', 'sys');
-transaction;
-include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
-getcmnt(array("runoob","sysindex"),$sql1);
-getcmnt(array("runoob","sysindex"),$sql2);
-getcmnt(array("runoob","sysindex"),$sql);
+    $sqlarray=array();
+    $sqlarray[]="UPDATE `$db`.`shelf` SET `sfsnum` = `sfsnum`+1 WHERE `sfsnum` >=$sfsnum and `idfr`=$idfr;";
+    $sqlarray[]="INSERT INTO `$db`.`shelf` (`sfname`, `idfr`, `sfsnum`) VALUES ('$sfname', $idfr, $sfsnum);";
+    $sql2=str_replace("'","\'",$sqlarray[0].$sqlarray[1]);
+    $sqlarray[]="INSERT INTO `$db`.`syslog` (`mtime`, `sql`, `username`) VALUES (Now(), '$sql2', 'sys');";
+    include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
+    getcmnt(array("runoob","sysindex"),$sqlarray);
+    $rsnum = array();
+    foreach($sqlarray as $sqlq){ //遍历数组 
+        $sqlq=$sqlq.";"; //分割后是没有“;”的，因为SQL语句以“;”结束，所以在执行SQL前把它加上         
+        $rsnum[] =$conne->uidRst($sqlq);//这个完全没有意义，因为无法使用ajax调用过来的js,总不能把这个传过去吧
+    }
+    $sqlarray=null;
+    $sql2=null;
 
 $conne->close_conn();
 }
@@ -63,7 +64,11 @@ $conne->close_conn();
             var timestamp =Date.parse(new Date());
             xmlhttp.open("GET","content/sys.php?page="+th.id+"&time="+timestamp,true);
             xmlhttp.send();
-        }        
+        }    
+        function cgbgcolor(th){
+            document.getElementById(th).style.background =  '#c3d08d';
+            setTimeout(function(){ document.getElementById(th).style.background =  ''; }, 3000);
+        }    
     </script>
     <style>
     span
@@ -79,11 +84,25 @@ $conne->close_conn();
         <span id="opdb"  onclick="changepage(this)">管理数据库</span>
         <span id="addsf"  onclick="changepage(this)">添加书架</span>
         <span id="addbk" onclick="changepage(this)">添加书目</span>
-        <span id="syslog" onclick="changepage(this)">操作日志</span>
+        <span id="oplog" onclick="changepage(this)">操作日志</span>
     </div>
     <div id="content">
         <?php
-        include_once "content/sys.php";
+        if(isset($_POST['insertsf'])){
+        echo <<<insertsf
+        <script>
+        document.getElementById("addsf").onclick();
+        </script>
+insertsf;
+        }else{
+            include_once "content/sys.php";
+        echo <<<showopdb
+            <script>
+            cgbgcolor('opdb');
+            </script>
+showopdb;
+        }
+        
         ?>
     </div>
 
@@ -95,23 +114,6 @@ $conne->close_conn();
 </div>
 
 </footer>
-
-<?php
-if(isset($_POST['insertsf'])){
-echo <<<insertsf
-<script>
-document.getElementById("addsf").onclick();
-</script>
-insertsf;
-}
-?>
-<script>
-    function cgbgcolor(th){
-        document.getElementById(th).style.background =  '#c3d08d';
-        setTimeout(function(){ document.getElementById(th).style.background =  ''; }, 3000);
-    }
-    cgbgcolor('opdb');
-</script>
 
 </body>
 </html>
