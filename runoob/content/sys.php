@@ -1,12 +1,15 @@
-<?php 
+<?php
+session_start();
 if(isset($_GET['page'])){
-$page = $_GET['page'];
+$dbmpage = $_GET['page'];
 }else{
-$page='opdb';
+$dbmpage='opdb';
 }
-include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,'vsrbcx');
+$_SESSION['pageinfo'][1] =$dbmpage;//方便刷新回到这里
+$connname = $_SESSION['userinfo']['connname'];
+include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
 $db=$conne->getconneinfo('dBase'); 
-switch ($page)
+switch ($dbmpage)
 {
 case "opdb":
 echo <<<opbd
@@ -33,7 +36,7 @@ sql;
                 $rs = $conne->getRowsArray($sql);
                 if(count($rs)){
                     $fieldarray =array('tbname','tbcmnt','tbrows');
-                    $tharray =array('表名','表说明','当前行数');
+                    $tharray =array('表名',"$db 数据库中表说明",'当前行数');
                     rstotable($rs,$fieldarray,$tharray);
                 }else{
                     echo "          数据库中没有表,这个宇宙空空如也，快重建它！";
@@ -43,69 +46,18 @@ sql;
             }
         echo "          </div>";
         echo "                  </div>";
-echo <<<script
-                <script>
-                function opdbtip(th) {
-                    var showDiv = document.getElementById('tipsdiv');
-                    showDiv.style.color='red';
-                    showDiv.innerHTML = th;
-                }
-
-                function tipout() {
-                    var showDiv = document.getElementById('tipsdiv');
-                    showDiv.style.color='';
-                    showDiv.innerHTML = '操作提示：无';
-                }
-
-                function opdb(th)
-                {
-                    var opdbtext =document.getElementById("opdbtext").value;
-                    if(opdbtext == th.id){                    
-                        var xmlhttp;
-                        cgbgcolor(th.id);
-                        if (window.XMLHttpRequest)
-                        {
-                            //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-                            xmlhttp=new XMLHttpRequest();
-                        }
-                        else
-                        {
-                            // IE6, IE5 浏览器执行代码
-                            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-                        }
-                        xmlhttp.onreadystatechange=function()
-                        {
-                            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                            {
-                                document.getElementById("opdbstatus").innerHTML=xmlhttp.responseText;
-                            }
-                        }
-                        var timestamp =Date.parse(new Date());
-                        xmlhttp.open("GET","content/opdb.php?opdb="+th.id+"&time="+timestamp,true);
-                        xmlhttp.send();
-                    }else{
-                        document.getElementById("opdbrs").innerHTML=th.id+":您输入的操作指令与要求不符";
-                    }
-                } 
-                </script>
-script;
-
     break;
 case "addsf":
         echo "添加书架<br>";
-        $sql = "SELECT * FROM $db.shelf ORDER BY sfsnum";        
-        $rs = $conne->getRowsArray($sql); 
+        $sql = "SELECT * FROM $db.shelf ORDER BY sfsnum";
+        $rs = $conne->getRowsArray($sql);
         if(count($rs)){
-            foreach($rs as $sflist){
-                $idsf = $sflist['idsf'];
-                $sfname = $sflist['sfname'];
-                $idfr = 1;
-                $sfsnum = $sflist['sfsnum'];
-                echo "当前书架：序号 => $sfsnum ;标识 =>$idsf ;名称 => $sfname<br>\r\n";
-            }
+            $fieldarray =array('sfsnum','sfname','idfr','idsf');
+            $tharray =array('序号',"书架名称",'楼层','标识');
+            rstotable($rs,$fieldarray,$tharray);
         }else{
             echo "          书架表内为空！";
-        }  
+        }
 
             echo <<<THE
 <form action="" method="post">
@@ -115,33 +67,31 @@ case "addsf":
 THE;
         break;
 case "addbk":
-        echo "添加书目";        
+        echo "添加书目<br>";        
         $sql = "SELECT bkname,bkintro FROM $db.book";
         $rs = $conne->getRowsArray($sql) ;
-        foreach($rs as $bksf){
-            $bk = $bksf['bkname'];
-            $sf = $bksf['bkintro'];
-            echo "书目简介：$sf => $sf <br>";
+        if(count($rs)){
+            $fieldarray =array('bkname','bkintro');
+            $tharray =array('书名',"书目简介");
+            rstotable($rs,$fieldarray,$tharray);
+        }else{
+            echo "          一本书都没有啦！";
         }
     break;
 case "syslog":        
         echo "操作日志";
-        $sql = "SELECT * FROM $db.syslog";
-        try{
-            $rs = $conne->getRowsArray($sql) ;
-        }catch(Throwable $e){
-            print_r($e);
-        }  
-        foreach($rs as $log){
-            $idlog = $log['idlog'];
-            $mtime = $log['mtime'];
-            $rssql = $log['sql'];
-            $username = $log['username'];
-            echo "日志序号 => $sfsnum ;操作人 =>$username ;时间 =>$idsf ;<br>内容 => $rssql<br>\r\n";
+        $sql = "SELECT * FROM $db.syslog ORDER BY mtime DESC";
+        $rs = $conne->getRowsArray($sql) ;
+        if(count($rs)){
+            $fieldarray =array('mtime','userid','username','abs');
+            $tharray =array('时间',"用户id",'用户名',"摘要");
+            rstotable($rs,$fieldarray,$tharray);
+        }else{
+            echo "          当前没有操作！";
         }
     break;
 default:
-    //这里应该是强制跳转;
+    $dbmpage='opdb';//出现其他情况，则跳转回数据库管理
     break;
 }
 $conne->close_conn();

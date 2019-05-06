@@ -30,7 +30,7 @@ CREATE TABLE `book`  (
   `bkicon` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `link` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '链接的网址',
   PRIMARY KEY (`idbk`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用来存储第二个层级' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用来存储第二个层级' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for chapter 2-7table
@@ -77,19 +77,18 @@ CREATE TABLE `shelf`  (
   `idfr` int(11) NOT NULL COMMENT 'floor 的id',
   `sfsnum` int(11) NOT NULL COMMENT '排序序号',
   PRIMARY KEY (`idsf`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '把数据库当成图书馆，这个代表楼层，每一floor层楼放不同类型的知识，每一层有若干的shelf' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '把数据库当成图书馆，这个代表楼层，每一floor层楼放不同类型的知识，每一层有若干的shelf' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for syslog 6-7table
 -- ----------------------------
 DROP TABLE IF EXISTS `syslog`;
 CREATE TABLE `syslog`  (
-  `idlog` int(11) NOT NULL AUTO_INCREMENT,
   `mtime` datetime(0) NOT NULL,
-  `sql` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `userid` int(11) NOT NULL COMMENT '防止重名，用户id',
   `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`idlog`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+  `abs` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '摘要'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for try 7-7table

@@ -57,9 +57,8 @@ theEnd;
     </div>
     <div>
         <?php
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';
-        //include_once "../tools/conn.php";
-        setconnparm($conne);
+        $connname = $_SESSION['userinfo']['connname'];
+        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
         $rs= $conne->getRowsRst("select * from runoob.try where codename='".$codename."'");
         ?>
         <textarea id="textareaCode" rows="40" cols="80"><?php

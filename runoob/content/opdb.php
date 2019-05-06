@@ -1,10 +1,12 @@
 <?php 
+session_start();
 if(isset($_GET['opdb'])){
 $opdb = $_GET['opdb'];
 }else{
 $opdb='opdb';
 }
-include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,'vsrbxr');
+$connname = $_SESSION['userinfo']['connname'];
+include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
 switch ($opdb)
 {
 case "skpl":  
@@ -19,7 +21,7 @@ case "skpl":
         echo "          <div id=\"opdbrs\">删库跑路操作成功，快跑啊</div>";
     }
     break;
-case "cjyz":
+case "cxks":
     $db=$conne->getconneinfo('dBase');
     $sql = "CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET 'utf8mb4';";
     $conne->uidRst($sql);
