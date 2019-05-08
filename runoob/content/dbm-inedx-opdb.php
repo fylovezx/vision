@@ -56,7 +56,7 @@ sql;
     if(count($rs)){
         $fieldarray =array('tbname','tbcmnt','tbrows');
         $tharray =array('表名','表说明','当前行数');
-        rstotable($rs,$fieldarray,$tharray);
+        rstodisplaytable($rs,$fieldarray,$tharray);
     }else{
         echo "          数据库中没有表,这个宇宙空空如也，快重建它！";
     }                

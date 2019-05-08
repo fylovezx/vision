@@ -27,12 +27,9 @@ if(!isset($_SESSION['userinfo']))
 
 //获取当前地址。方便刷新回来
 if(!isset($_SESSION['pageinfo'])){
-    $_SESSION['pageinfo']=array('dbm-index','opdb');
+    $_SESSION['pageinfo']=array('dbm-index','opdb','');//这里后面要根据权限修改为主页
 }
 
-if(!isset($_SESSION['canpost'])){
-    $_SESSION['canpost']=true;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -23,6 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book`  (
   `idbk` int(11) NOT NULL AUTO_INCREMENT,
+  `ctime` datetime(0) NOT NULL COMMENT '创建时间',
   `bkname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `idsf` int(11) NOT NULL,
   `bksnum` int(11) NOT NULL,
@@ -73,6 +74,7 @@ CREATE TABLE `section`  (
 DROP TABLE IF EXISTS `shelf`;
 CREATE TABLE `shelf`  (
   `idsf` int(11) NOT NULL AUTO_INCREMENT,
+  `ctime` datetime(0) NOT NULL COMMENT '创建时间',
   `sfname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
   `idfr` int(11) NOT NULL COMMENT 'floor 的id',
   `sfsnum` int(11) NOT NULL COMMENT '排序序号',
@@ -80,15 +82,15 @@ CREATE TABLE `shelf`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '把数据库当成图书馆，这个代表楼层，每一floor层楼放不同类型的知识，每一层有若干的shelf' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for syslog 6-7table
+-- Table structure for opliblog 6-7table
 -- ----------------------------
-DROP TABLE IF EXISTS `syslog`;
-CREATE TABLE `syslog`  (
+DROP TABLE IF EXISTS `opliblog`;
+CREATE TABLE `opliblog`  (
   `mtime` datetime(0) NOT NULL,
   `userid` int(11) NOT NULL COMMENT '防止重名，用户id',
   `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `abs` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '摘要'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书库管理日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for try 7-7table
