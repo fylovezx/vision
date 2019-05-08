@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 50722
  Source Host           : localhost:3306
- Source Schema         : runoob
+ Source Schema         : wong
 
  Target Server Type    : MySQL
  Target Server Version : 50722

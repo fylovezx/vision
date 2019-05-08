@@ -5,10 +5,10 @@
 //-------章节 -------
 $connname = $_SESSION['userinfo']['connname'];
 include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
-$sql = "SELECT * FROM runoob.cj1 ORDER BY snum ";
+$sql = "SELECT * FROM wong.cj1 ORDER BY snum ";
 $rs = $conne->getRowsArray($sql);
 include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
-getcmnt(array("runoob","index"),$rs);
+getcmnt(array("wong","index"),$rs);
 foreach($rs as $section){
         echo "<div>".$section["name"]."</div>\r\n";
 }
@@ -18,9 +18,9 @@ echo <<<maintext
 <div id="maintext" style="float:left">
 maintext;
 
-$sql = "SELECT * FROM runoob.cj2 ";
+$sql = "SELECT * FROM wong.cj2 ";
 $rs2 = $conne->getRowsArray($sql);
-getcmnt(array("runoob","index"),$rs2);
+getcmnt(array("wong","index"),$rs2);
 
 // ------------------把之前的rs2结果进行排序-----begin--------------
     foreach ($rs2 as $key => $row) {
@@ -32,7 +32,7 @@ getcmnt(array("runoob","index"),$rs2);
     // 把 $data 作为最后一个参数，以通用键排序
     array_multisort($cj1, SORT_ASC, $snum, SORT_ASC, $rs2);
 // ------------------把之前的rs2结果进行排序-----end--------------
-getcmnt(array("runoob","index"),$rs2);
+getcmnt(array("wong","index"),$rs2);
 
 /* 
 这里需要整理一下，
@@ -59,7 +59,7 @@ foreach($rs as $section){
         }
         array_multisort($dispalysnum, SORT_ASC, $dispalyrs2);
         $j=1;
-        getcmnt(array("runoob","index"),$dispalyrs2);
+        getcmnt(array("wong","index"),$dispalyrs2);
         for($i=0;$i<count($dispalyrs2);$i++){
             $link = $dispalyrs2[0]["link"];
             $diricon = $dispalyrs2[0]["icon"];

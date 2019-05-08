@@ -34,7 +34,7 @@ stru:结构(用于代表floor-shelf-book-chapter-section层级)
 Ct:当前
 ### 权限
 #### 项目名称
-vs:vision rb:runoob  
+vs:vision rb:wong  
 #### 人员权限
 DBM	超级管理员 FLM 楼层管理员 SFM 书架管理员 WTR 书本作者  
 CTR 资料贡献者 STD 已注册用户 VIS 未注册游客  
@@ -44,16 +44,16 @@ skpl:删库跑路   cxks:重新开始  sjhf:数据恢复  bfsj:备份数据
 opdb:管理数据库 opliblog:书库管理日志
 
 ## 更新日志
-2190507
-文件
-      更改sys.php->dbm-index
-      更改opdb.php->dbm-index-content
-js
-      函数名
-      修改changepage->AjaxDbmContent
-      更改opdb->AjaxDbmOpdb
-dbm-index-content.php
-      去除添加书架，添加书目，统一改为书库管理
+2190507  
+文件  
+      更改sys.php->dbm-index  
+      更改opdb.php->dbm-index-content  
+js  
+      函数名  
+      修改changepage->AjaxDbmContent  
+      更改opdb->AjaxDbmOpdb  
+dbm-index-content.php  
+      去除添加书架，添加书目，统一改为书库管理  
 
 20190506  
 优化：01.修改网站只有一个index入口。  
