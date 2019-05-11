@@ -57,9 +57,8 @@ theEnd;
     </div>
     <div>
         <?php
-        $connname = $_SESSION['userinfo']['connname'];
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
-        $rs= $conne->getRowsRst("select * from wong.try where codename='".$codename."'");
+        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,'root');
+        $rs= $conne->getRowsRst("select * from runoob.try where codename='".$codename."'");
         ?>
         <textarea id="textareaCode" rows="40" cols="80"><?php
         $replace = array("\\n");

@@ -29,7 +29,7 @@ case "floor":
     $rs = $conne->getRowsArray($sql);
     if(count($rs)){
         echo "<div id=\"dbm-CtLoc\">书架列表</span></div>";
-        $fieldarray =array('sfsnum','ctime','sfname','idfr','idsf');
+        $fieldarray =array('sfsnum','ctime','sfname','idfl','idsf');
         $tharray =array('序号',"创建时间","书架名称",'楼层','标识');
         //rstodisplaytable($rs,$fieldarray,$tharray);
         $rsrowarray =$rs ;
@@ -56,8 +56,8 @@ case "floor":
     }
         echo <<<THE
     <form action="" method="post">
-    序号：<input type="text" name="sfsnum" >名称: <input type="text" name="sfname">
-    <input type="submit" name="insertsf" value="新建书架信息">
+    <input type="text" name="stru" value="shelf" style="display:none">序号：<input type="text" name="sfsnum" >名称: <input type="text" name="sfname">
+    <input type="submit" name="insertdata" value="新建书架信息">
     </form> 
 THE;
 //----------------------------floor - shelf 列表--------end-------------------------------
@@ -95,6 +95,16 @@ echo "<div id=\"dbm-CtLoc\"><span onclick=\"AjaxDbmOplib('floor-0')\">书架列�
     }else{
         echo "          一本书都没有啊！";
     }
+    echo <<<THE
+    <form action="" method="post" enctype="multipart/form-data">
+    <input type="text" name="stru" value="book" style="display:none"><input type="text" name="idsf" value="$id" style="display:none">
+    序号：<input type="text" name="bksnum" >名称: <input type="text" name="bkname"><br>
+    上传书籍图标：<input type="file" name="bkicon"><br>
+    简介:<input type="text" name="bkintro" placeholder="少于200字" style="width:500px"><br>
+    分配指向链接:<input type="text" name="link" placeholder="XXX-tutorial"><br>
+    <input type="submit" name="insertdata" value="新建书籍信息">
+    </form> 
+THE;
 //----------------------------shelf - book 列表--------end---------------------------------
 break;
 }

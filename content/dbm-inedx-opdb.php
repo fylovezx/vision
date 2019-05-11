@@ -27,7 +27,7 @@ case "cxks":
     $conne->uidRst($sql);
     $sql = "USE `$db`;";
     $conne->uidRst($sql);
-    $sqlfile=file_get_contents("../data/db/vsrbdbstruct.sql");
+    $sqlfile=file_get_contents("../data/db/wongdbstruct.sql");
     $sqlarray=explode(";",$sqlfile); //用explode()函数把‍$sql字符串以“;”分割为数组 
 
     foreach($sqlarray as $sqlq){ //遍历数组 

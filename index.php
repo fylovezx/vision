@@ -17,17 +17,17 @@ tempdata    临时数据：存储一些临时用的数据，用后即消
 if(!isset($_SESSION['userinfo']))
 {
     $_SESSION['userinfo']=array(
-        "name" =>'fy',
-        "userid" =>1,
-        "qx"   =>1,
-        "login" =>true,
-        "connname" =>'vsrbdbm',
+        "name" =>'',
+        "userid" =>0,
+        "qx"   =>0,
+        "login" =>false,
+        "connname" =>'wongvis',
     );
 }
 
 //获取当前地址。方便刷新回来
 if(!isset($_SESSION['pageinfo'])){
-    $_SESSION['pageinfo']=array('dbm-index','opdb','');//这里后面要根据权限修改为主页
+    $_SESSION['pageinfo']=array('main-visit','','');//这里后面要根据权限修改为主页
 }
 
 ?>
@@ -39,6 +39,7 @@ if(!isset($_SESSION['pageinfo'])){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>学习小站</title>
     <link type="text/css" rel="stylesheet"  href="css/main-index.css" />
+    <link type="text/css" rel="stylesheet"  href="css/main-login.css" />
     <link type="text/css" rel="stylesheet"  href="css/dbm-index.css" />
     <script src="js/dbm-index.js"></script>
 </head>
@@ -55,19 +56,26 @@ if(!isset($_SESSION['pageinfo'])){
 
 <div >
     <?php 
+/*     
+    ajax优点：
+        可以不用重新载入index页面
+            但是功能上的切换还是需要重新载入好一点
+            这里需要设置一个中转的页面用于调度
+    include:
+        可以使用js文件
+        这里用include就没有办法通过main-div-nav进行跳转
+        include也可用通过span内的<a>标签进行切换，不过需要一个页面中转
+*/
         $ctpage=$_SESSION['pageinfo'][0];
-
         include "content/$ctpage.php";
-        
     ?>
 </div>
 
-<footer>
-<div >
+<div style="clear:both;">
     <?php    
     include_once $_SERVER['DOCUMENT_ROOT'].'/tools/advergers.php'; givemewords($advergerswords,"Tony");
     ?>    
 </div>
-</footer>
+
 </body>
 </html>

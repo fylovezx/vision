@@ -76,7 +76,7 @@ CREATE TABLE `shelf`  (
   `idsf` int(11) NOT NULL AUTO_INCREMENT,
   `ctime` datetime(0) NOT NULL COMMENT '创建时间',
   `sfname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
-  `idfr` int(11) NOT NULL COMMENT 'floor 的id',
+  `idfl` int(11) NOT NULL COMMENT 'floor 的id',
   `sfsnum` int(11) NOT NULL COMMENT '排序序号',
   PRIMARY KEY (`idsf`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '把数据库当成图书馆，这个代表楼层，每一floor层楼放不同类型的知识，每一层有若干的shelf' ROW_FORMAT = Dynamic;
