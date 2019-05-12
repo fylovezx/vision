@@ -9,11 +9,21 @@ if(isset($_GET['page'])){
 
 switch ($page){
     case "index":
-    $_SESSION['pageinfo'][0]='main-visit';//这里后面要根据权限修改为主页
+    $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
     echo "<script>window.location.href='../index.php';</script>";
     break;
     case "dbm-index":
-    $_SESSION['pageinfo'][0]='dbm-index';//这里后面要根据权限修改为主页
+        $_SESSION['pageinfo']['CtLoc']='dbm-index';
+        if(!isset($_SESSION['pageinfo']['dbm-index'])){
+            $_SESSION['pageinfo']['dbm-index']='opdb';//不能删，否则无法通过main-div-nav切换
+        }
+    echo "<script>window.location.href='../index.php';</script>";
+    break;
+    case "wtr-index":
+        $_SESSION['pageinfo']['CtLoc']='wtr-index';
+        if(!isset($_SESSION['pageinfo']['wtr-index'])){
+            $_SESSION['pageinfo']['wtr-index']='all-0';//不能删，否则无法通过main-div-nav切换
+        }
     echo "<script>window.location.href='../index.php';</script>";
     break;
 

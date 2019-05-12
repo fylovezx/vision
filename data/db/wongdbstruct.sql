@@ -41,6 +41,7 @@ CREATE TABLE `chapter`  (
   `idcp` int(11) NOT NULL AUTO_INCREMENT,
   `cpname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `idbk` int(11) NOT NULL,
+  `link` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `cpsnum` int(11) NOT NULL,
   PRIMARY KEY (`idcp`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '指向与序列号之间的关系' ROW_FORMAT = Dynamic;
@@ -64,7 +65,7 @@ CREATE TABLE `section`  (
   `scname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `idcp` int(11) NOT NULL,
   `link` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `scnum` int(11) NOT NULL,
+  `scsnum` int(11) NOT NULL,
   PRIMARY KEY (`idsc`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表示节' ROW_FORMAT = Dynamic;
 

@@ -7,7 +7,7 @@ $dbmpage = $_GET['page'];
 }else{
 $dbmpage='opdb';
 }
-$_SESSION['pageinfo'][1] =$dbmpage;//方便刷新回到这里
+$_SESSION['pageinfo']['dbm-index'] =$dbmpage;//方便刷新回到这里
 $connname = $_SESSION['userinfo']['connname'];
 include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
 $db=$conne->getconneinfo('dBase'); 

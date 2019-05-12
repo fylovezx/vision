@@ -58,6 +58,29 @@ switch ($stru){
     $sqlxrrz=null;
     $conne->close_conn();
     break;
+    case "chapter":
+
+    $idbk = $dataarray['idbk'];
+    $cpname =$dataarray['cpname'];
+    $cpsnum =$dataarray['cpsnum'];
+    $link =$dataarray['link'];
+
+        $sqlzlxh="UPDATE `$db`.`chapter` SET `cpsnum` = `cpsnum`+1 WHERE `cpsnum` >=$cpsnum and `idbk`=$idbk;";
+        $sqlcrbk="INSERT INTO `$db`.`chapter` (`cpname`, `idbk`, `cpsnum` , `link` ) ";
+        $sqlcrbk .=" VALUES ('$cpname', $idbk, $cpsnum, '$link');";
+        $rsnum = array();
+        $rsnum[] =$conne->uidRst($sqlzlxh);//这条语句应当是用来整理序号
+        $rsnum[] =$conne->uidRst($sqlcrbk);
+        $insertid = $conne->getinsertid();
+        $sqlxrrz="INSERT INTO `$db`.`opliblog` (`mtime`, `userid`,`username`, `abs`) VALUES ('$mysqltime', ".
+                    "$userid, '$username','在标识id为 $idbk 的书<br> 新增名为 $cpname 的章,<br> 其标识id为$insertid');";
+        $conne->uidRst($sqlxrrz);
+        $sqlzlxh=null;
+        $sqlcrbk=null;
+        $sqlxrrz=null;
+        $conne->close_conn();
+
+    break;
 }
 
 

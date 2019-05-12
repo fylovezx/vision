@@ -5,7 +5,8 @@
 
 if($_SESSION['userinfo']['login']){
     $uname = $_SESSION['userinfo']['uname'];
-    echo '<span id="mian-navmenu-index"  ><a href="content/main-changepage.php?page=dbm-index">后台管理</a></span> '."\r\n";
+    echo '<span id="mian-navmenu-dbm"  ><a href="content/main-changepage.php?page=dbm-index">后台管理</a></span> '."\r\n";
+    echo '<span id="mian-navmenu-wtr"  ><a href="content/main-changepage.php?page=wtr-index">编写书籍</a></span> '."\r\n";
     echo '<span id="mian-navmenu-grzx" >'.$uname.'中心</span>'."\r\n";
     echo '<span id="mian-navmenu-msg" >消息(<font color="red">99</font>)</span>'."\r\n";
     echo '<span id="mian-navmenu-exit" ><a href="content/main-login.php">退出</a></span>'."\r\n";

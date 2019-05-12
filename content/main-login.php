@@ -14,7 +14,9 @@ if($_POST['sublogin']){
 				"login" =>true,
 				"connname" =>'wongdbm',
 			);
-			$_SESSION['pageinfo']=array('dbm-index','','');//这里后面要根据权限修改为主页
+			$CtLoc = 'dbm-index';
+			$_SESSION['pageinfo']['CtLoc']=$CtLoc;
+			$_SESSION['pageinfo'][$CtLoc]='';//这里后面要根据权限修改为主页
 			echo "<script>alert('登录成功！'); window.location.href='../index.php';</script>";
 		break;
 		case 'flm':
@@ -45,7 +47,10 @@ if($_POST['sublogin']){
 			"login" =>true,
 			"connname" =>'wongwtr',
 		);
-			echo "<script>alert('登录成功！'); window.location.href='../index.php';</script>";
+		$CtLoc = 'wtr-index';
+		$_SESSION['pageinfo']['CtLoc']=$CtLoc;
+		$_SESSION['pageinfo'][$CtLoc]='';//这里后面要根据权限修改为主页		
+		echo "<script>alert('登录成功！'); window.location.href='../index.php';</script>";
 		break;
 		case 'ctr':
 		$_SESSION['userinfo']=array(

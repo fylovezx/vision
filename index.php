@@ -23,11 +23,7 @@ if(!isset($_SESSION['userinfo']))
         "login" =>false,
         "connname" =>'wongvis',
     );
-}
-
-//获取当前地址。方便刷新回来
-if(!isset($_SESSION['pageinfo'])){
-    $_SESSION['pageinfo']=array('main-visit','','');//这里后面要根据权限修改为主页
+    $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
 }
 
 ?>
@@ -41,7 +37,9 @@ if(!isset($_SESSION['pageinfo'])){
     <link type="text/css" rel="stylesheet"  href="css/main-index.css" />
     <link type="text/css" rel="stylesheet"  href="css/main-login.css" />
     <link type="text/css" rel="stylesheet"  href="css/dbm-index.css" />
+    <link type="text/css" rel="stylesheet"  href="css/wtr-index.css" />
     <script src="js/dbm-index.js"></script>
+    <script src="js/wtr-index.js"></script>
 </head>
 <body>
 <div class="main-div-head" >
@@ -66,13 +64,13 @@ if(!isset($_SESSION['pageinfo'])){
         这里用include就没有办法通过main-div-nav进行跳转
         include也可用通过span内的<a>标签进行切换，不过需要一个页面中转
 */
-        $ctpage=$_SESSION['pageinfo'][0];
+        $ctpage=$_SESSION['pageinfo']['CtLoc'];
         include "content/$ctpage.php";
     ?>
 </div>
 
 <div style="clear:both;">
-    <?php    
+    <?php  
     include_once $_SERVER['DOCUMENT_ROOT'].'/tools/advergers.php'; givemewords($advergerswords,"Tony");
     ?>    
 </div>

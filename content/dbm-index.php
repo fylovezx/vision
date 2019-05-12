@@ -6,11 +6,8 @@
  * 
  */
 
-if($_SESSION['pageinfo'][0]!='dbm-index'){
-    $_SESSION['pageinfo'][0]='dbm-index';
-    $_SESSION['pageinfo'][1]='opdb';
-}
-$dbmpage=$_SESSION['pageinfo'][1];
+
+$dbmpage=$_SESSION['pageinfo']['dbm-index'];
 if(empty($dbmpage)){
     $dbmpage='opdb';
 }
@@ -36,9 +33,10 @@ if(isset($_POST['insertdata'])){
     </div>
 <?php
 //这里负责刷新回到原来位置
-if($dbmpage=='oplib'){
-    if($_SESSION['pageinfo'][2]!=''){
-    $struid = $_SESSION['pageinfo'][2];
+
+if(is_array($dbmpage) || isset($dbmpage['oplib'])){
+    if(isset($_SESSION['pageinfo']['dbm-index']['oplib'])){
+    $struid = $_SESSION['pageinfo']['dbm-index']['oplib'];
     echo <<<insertdata
     <script>
     AjaxDbmOplib('$struid');

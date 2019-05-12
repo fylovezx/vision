@@ -6,8 +6,8 @@ $struid = $_GET['struid'];
     $struid='floor-0';
 }
 
-$_SESSION['pageinfo'][1] ='oplib';//方便刷新回到这里
-$_SESSION['pageinfo'][2] =$struid;//方便刷新回到这里
+$_SESSION['pageinfo']['dbm-index'] =array('oplib'=>'');//方便刷新回到这里
+$_SESSION['pageinfo']['dbm-index']['oplib'] =$struid;//方便刷新回到这里
 $struarray = explode("-",$struid);
 $stru = $struarray[0];
 $id = $struarray[1];

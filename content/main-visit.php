@@ -1,10 +1,7 @@
-<div id="侧边栏" style="float:left">
+<div id="main-visit-cbl" style="float:left">
 
 <?php
-if($_SESSION['pageinfo'][0]!='main-visit'){
-    $_SESSION['pageinfo'][0]='main-visit';
-    $_SESSION['pageinfo'][1]='';
-}
+    $_SESSION['pageinfo']['CtLoc']='main-visit';
 //-------章节 -------
 $connname = $_SESSION['userinfo']['connname'];
 include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
