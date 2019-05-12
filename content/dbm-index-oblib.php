@@ -47,7 +47,7 @@ case "floor":
             }
             $struid = "shelf-".$rsrow["idsf"];
             echo "		<td ><span onclick=\"AjaxDbmOplib('$struid')\">进入</span></td>\r\n";
-            echo "		<td ><span >编辑</span></td>\r\n";
+            echo "		<td ><span title='此功能暂未实现'>编辑</span></td>\r\n";
             echo "	</tr>\r\n";
         }
         echo "</table>\r\n";
@@ -78,7 +78,7 @@ echo "<div id=\"dbm-CtLoc\"><span onclick=\"AjaxDbmOplib('floor-0')\">书架列�
         foreach($tharray as $th){
             echo "		<th><nobr>$th</nobr></th>\r\n";
         }
-        echo "		<th colspan=2><nobr>操作</nobr></th>\r\n";
+        echo "		<th ><nobr>操作</nobr></th>\r\n";
         echo "	</tr>\r\n";
         foreach($rsrowarray as $rsrow){
             echo "	<tr >\r\n";
@@ -87,8 +87,7 @@ echo "<div id=\"dbm-CtLoc\"><span onclick=\"AjaxDbmOplib('floor-0')\">书架列�
                 echo "		<td >$result</td>\r\n";
             }
             $struid = "book-".$rsrow["idbk"];
-            echo "		<td ><span >查看详情</span></td>\r\n";
-            echo "		<td ><span >编辑</span></td>\r\n";
+            echo "		<td ><span title='此功能暂未实现'>编辑</span></td>\r\n";
             echo "	</tr>\r\n";
         }
         echo "</table>\r\n";

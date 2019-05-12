@@ -4,7 +4,7 @@ if(isset($_GET['struid'])){
 $struid = $_GET['struid'];
 }else{
     //这种情况属于非法进入，应当直接予以退出处理
-    echo "<script>alert('非法访问wtr-index-comp.php！'); window.location.href='main_login.php';</script>";
+    echo "<script>alert('非法访问wtr-index-comp.php！'); window.location.href='main-login.php';</script>";
 }
 $_SESSION['pageinfo']['wtr-index'] =$struid;//方便刷新回到这里
 $struarray = explode("-",$struid);
@@ -67,10 +67,11 @@ wtrcompcbl;
             foreach($rs as $chapter){
                 $cpname = $chapter["cpname"];
                 $idcp = $chapter["idcp"];
-                echo "<div><span  onclick=\"AjaxWtrNew('chapter-$idcp')\">$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span></div>\r\n";
+                $link = $chapter["link"];
+                echo "<div><span  onclick=\"AjaxWtrVis('$link')\">$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span></div>\r\n";
             }
             echo "</div>";
-            $_SESSION['ajax'] = array('wtr-comp-content', "chapter-".$rs[0]["idcp"]);
+            $_SESSION['ajax'] = array('wtr-comp-content', "link-".$rs[0]["link"]);
         }else{
             echo "</div>";
             $_SESSION['ajax'] = array('wtr-comp-content', "book-$id");

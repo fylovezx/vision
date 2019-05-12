@@ -1,10 +1,11 @@
 <?php 
+session_start();
 /**
- * 显示数据库中指定codename 的代码的效果，
+ * 显示数据库中指定htmlpage 的代码的效果，
  * 1.防止误入的措施
- *  无，则作为model练习
+ *  暂未做
  * 2.运行流程
- *  根据$_POST["codename"]从mysql数据库中读取对应的code代码，
+ *  根据$_GET["link"]从mysql数据库中读取对应的html代码，
  *  显示在左侧代码展示区textarea中，并运行显示在右侧的代码显示区
  * 
  * 3.控件功能
@@ -16,10 +17,12 @@
  * 
  */
 
-if(isset( $_GET["codename"])){
-    $codename = $_GET["codename"];
+if(isset( $_GET["link"])){
+    $link = $_GET["link"];
 }else{
-    $codename = 'tryhtml_layout_divs';
+    //还需要在这里验证权限
+    //这种情况属于非法进入，应当直接予以退出处理
+    echo "<script>alert('非法get访问wtr-comp-link.php！'); window.location.href='main-login.php';</script>";
 }
 
 echo <<<theEnd
@@ -29,7 +32,7 @@ echo <<<theEnd
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>测试 $codename</title>
+    <title>编辑 $link</title>
     <script>
     function accesskey(){
       document.getElementById('btn-default').accessKey="y"
@@ -55,17 +58,27 @@ theEnd;
         </div>
     </div>
     <div>
+    <form action="wtr-comp-link-insupd.php" method="post">
         <?php
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,"wongdbm");
-        $rs= $conne->getRowsRst("select * from runoob.try where codename='".$codename."'");
+        $connname = $_SESSION['userinfo']['connname'];
+        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
+        $db=$conne->getconneinfo('dBase');
+        //$rs= $conne->getRowsRst("select * from runoob.try "); 
+        $rs2= $conne->getRowsRst("SELECT htmlpage FROM $db.htmlpage WHERE link='$link'");
+        //$rsstr1 = $rs["code"];
+        $rs2str = $rs2["htmlpage"];
+        echo "<input type=\"text\" name=\"link\" value=\"$link\" style=\"display:none\">";
         ?>
-        <textarea id="textareaCode" rows="40" cols="80"><?php
+        
+        <textarea id="textareaCode" name="htmlpage" rows="40" cols="80"><?php
         $replace = array("\\n");
         $find = array("\r\n");
-        $textstr = str_replace($replace,$find,$rs["code"]);
+        //$textstr = str_replace($replace,$find,$rs2["htmlpage"]);
+        $textstr = str_replace($replace,$find,$rs2str);
         echo $textstr;
-        ?>
-        </textarea>
+        ?></textarea>
+        <input type="submit" name="subhtmlpage" value="提交至数据库">
+</form>
     </div>
 </div>
 <div id="midcut" style="width:100px;float:left;"><br/></div>
@@ -97,8 +110,8 @@ function resetCode() {
   var initCode = "<?php 
     $find = array("<",">","\\\"");
     $replace = array("&lt","&gt","&quot;");
-    $code =str_replace($replace,$find,$rs["code"]);
-    echo $code;    
+    $htmlpage =str_replace($replace,$find,$rs2["htmlpage"]);
+    echo $htmlpage;    
     ?>"
   document.getElementById("textareaCode").value = initCode;
 }

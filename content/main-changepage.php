@@ -4,7 +4,7 @@ if(isset($_GET['page'])){
     $page = $_GET['page'];
 }else{
     //这种情况属于非法进入，应当直接予以退出处理
-    echo "<script>alert('非法访问！'); window.location.href='main_login.php';</script>";
+    echo "<script>alert('非法访问！'); window.location.href='main-login.php';</script>";
 }
 
 switch ($page){

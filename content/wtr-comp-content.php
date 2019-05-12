@@ -2,22 +2,22 @@
 @session_start();
 
 if(isset($_SESSION['ajax']) ){
-    echo "session访问，include注意地址的问题<br>";
+    echo "session访问".$_SESSION['ajax'][1]."，include注意地址的问题";
     if($_SESSION['ajax'][0]=='wtr-comp-content'){
         $struid = $_SESSION['ajax'][1];
         unset($_SESSION['ajax']);
     }else{
         unset($_SESSION['ajax']);
-        echo "<script>alert('非法session访问wtr-comp-content.php！'); window.location.href='main_login.php';</script>";
+        echo "<script>alert('非法session访问wtr-comp-content.php！'); window.location.href='main-login.php';</script>";
     }
     
 }else{
-    echo "get访问<br>";
+    echo "get访问".$_GET['struid'];
     if(isset($_GET['struid'])){
         $struid = $_GET['struid'];
     }else{
         //这种情况属于非法进入，应当直接予以退出处理
-        echo "<script>alert('非法get访问wtr-index-comp.php！'); window.location.href='main_login.php';</script>";
+        echo "<script>alert('非法get访问wtr-index-comp.php！'); window.location.href='main-login.php';</script>";
     }
 }
 $struarray = explode("-",$struid);
@@ -41,8 +41,21 @@ case "book":
     <input type="submit" name="insertdata" value="新建章信息">
     </form> 
 THE;
-
-
+break;
+case "link":
+    $link = substr($struid,5);
+    echo "<a href=\"content/wtr-comp-link.php?link=$link\" target=\"_Blank\">编辑请点击此处</a><br>";
+    // 读取link-指向的的文本
+    //建立实现浏览div
+    echo '<div id="htmlarea" style="background-color:#e7e7e7;height:700px;width:700px;float:left;">';
+    $sql = "SELECT htmlpage FROM $db.htmlpage WHERE link='$link'";
+    $rs = $conne->getRowsRst($sql);    
+    $find = array("<",">","\\\"");
+    $replace = array("&lt","&gt","&quot;");
+    $htmlpage =str_replace($replace,$find,$rs["htmlpage"]);
+  
+    echo $htmlpage;    
+    echo '</div>';
 break;
 }
 ?>
