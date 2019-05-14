@@ -1,5 +1,10 @@
 <?php
 @session_start();
+/**
+ * 这个页面承担了两个功能。。。。
+ * 两个功能通过struid 是book还是link区分，要改成两个页面
+ * 
+ */
 
 if(isset($_SESSION['ajax']) ){
     echo "session访问".$_SESSION['ajax'][1]."，include注意地址的问题";
@@ -23,9 +28,6 @@ if(isset($_SESSION['ajax']) ){
 $struarray = explode("-",$struid);
 $stru = $struarray[0];
 $id = $struarray[1];
-$connname = $_SESSION['userinfo']['connname'];
-include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
-$db=$conne->getconneinfo('dBase'); 
 switch ($stru)
 {
 case "book":
@@ -42,7 +44,24 @@ case "book":
     </form> 
 THE;
 break;
+case "chapter":
+    /* 代表是要在本书之中插入章节
+    给一个章列表，是插入章还是插入节 
+    这里插入章，节在各章之中体现
+    */
+    echo <<<THE
+    <form action="" method="post">
+    <input type="text" name="stru" value="section" style="display:none"><input type="text" name="idcp" value="$id" style="display:none">
+    第<input type="text" name="scsnum" >节 名称: <input type="text" name="scname"><br>
+    分配指向链接:<input type="text" name="link" placeholder="html-firstcp">
+    <input type="submit" name="insertdata" value="新建节信息">
+    </form> 
+THE;
+break;
 case "link":
+    $connname = $_SESSION['userinfo']['connname'];
+    include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
+    $db=$conne->getconneinfo('dBase');
     $link = substr($struid,5);
     echo "<a href=\"content/wtr-comp-link.php?link=$link\" target=\"_Blank\">编辑请点击此处</a><br>";
     // 读取link-指向的的文本
@@ -52,9 +71,8 @@ case "link":
     $rs = $conne->getRowsRst($sql);    
     $find = array("<",">","\\\"");
     $replace = array("&lt","&gt","&quot;");
-    $htmlpage =str_replace($replace,$find,$rs["htmlpage"]);
-  
-    echo $htmlpage;    
+    $htmlpage =str_replace($replace,$find,$rs["htmlpage"]);  
+    echo $htmlpage;
     echo '</div>';
 break;
 }

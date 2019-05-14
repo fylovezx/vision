@@ -16,7 +16,7 @@ if(isset($_POST['insertdata'])){
         $_SESSION['postdata']=$_POST;
         include_once "content/dbm-insertdata.php";
     }else{
-        echo "该提交数据与上次提交重复--对话框形式";
+        echo "<script>alert('dbm-index警告:该提交数据与上次提交重复');</script>";
     }
 }
 
