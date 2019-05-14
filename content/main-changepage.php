@@ -6,10 +6,11 @@ if(isset($_GET['page'])){
     //这种情况属于非法进入，应当直接予以退出处理
     echo "<script>alert('非法访问！'); window.location.href='main-login.php';</script>";
 }
-
+//其实也可以通过ajax访问主页
 switch ($page){
     case "index":
     $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
+    $_SESSION['pageinfo']['main-visit'] ='all-0';
     echo "<script>window.location.href='../index.php';</script>";
     break;
     case "dbm-index":

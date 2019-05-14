@@ -5,6 +5,8 @@ session_start();
 session 需要存储。
 userinfo    用户信息：姓名、id、权限（id）、访问session(id)
 pageinfo    页面信息：上一个页面，当前页面
+    CtLoc 当前位置
+
 tempdata    临时数据：存储一些临时用的数据，用后即消
 */
 
@@ -24,6 +26,7 @@ if(!isset($_SESSION['userinfo']))
         "connname" =>'wongvis',
     );
     $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
+    $_SESSION['pageinfo']['main-visit'] ='all-0';
 }
 
 ?>
@@ -40,6 +43,7 @@ if(!isset($_SESSION['userinfo']))
     <link type="text/css" rel="stylesheet"  href="css/wtr-index.css" />
     <script src="js/dbm-index.js"></script>
     <script src="js/wtr-index.js"></script>
+    <script src="js/vis-index.js"></script>
 </head>
 <body>
 <div class="main-div-head" >
@@ -52,7 +56,7 @@ if(!isset($_SESSION['userinfo']))
     ?>
 </div>
 
-<div >
+<div id = "main-content">
     <?php 
 /*     
     ajax优点：
