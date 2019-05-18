@@ -31,7 +31,8 @@ $id = $struarray[1];
 switch ($stru)
 {
 case "book":
-    /* 代表是要在本书之中插入章节
+    /* ajax AjaxWtrNew 调用
+    代表是要在本书之中插入章节
     给一个章列表，是插入章还是插入节 
     这里插入章，节在各章之中体现
     */
@@ -45,7 +46,8 @@ case "book":
 THE;
 break;
 case "chapter":
-    /* 代表是要在本书之中插入章节
+    /* ajax AjaxWtrNew 调用
+    代表是要在本书之中插入章节
     给一个章列表，是插入章还是插入节 
     这里插入章，节在各章之中体现
     */
@@ -59,6 +61,9 @@ case "chapter":
 THE;
 break;
 case "link":
+/**
+ * AjaxWtrComp中获取数据库中的文本
+ */
     $connname = $_SESSION['userinfo']['connname'];
     include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
     $db=$conne->getconneinfo('dBase');

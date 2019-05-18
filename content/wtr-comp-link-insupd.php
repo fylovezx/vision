@@ -15,11 +15,8 @@ if(isset($_POST['subhtmlpage'])){
     $db=$conne->getconneinfo('dBase');
     $contents = $_POST['htmlpage'];
     $link = $_POST['link'];
-    $str = $contents;
-    $arr=explode("\n",$str);
-    $str1=nl2br($str);//回车换成换行
-    $find2 = array("<",">","\"","\r\n");
-    $replace = array("&lt","&gt","&quot;","\\\\n");
+    $find2 = array("<",">","\"","\r\n","'");
+    $replace = array("&lt","&gt","&quot;","&ltbr /&gt","\'");
     $textstr = str_replace($find2,$replace,$contents);
 
     $sql = "SELECT link FROM $db.htmlpage WHERE link='$link'";

@@ -6,6 +6,7 @@
  * 
  */
 if($_SESSION['pageinfo']['wtr-index']==''){
+    //这是一个冗余判断。为了方便在写登陆的时候直接赋予空值
     $_SESSION['pageinfo']['wtr-index']='all-0';
 }
 $wtrpage=$_SESSION['pageinfo']['wtr-index'];

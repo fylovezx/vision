@@ -71,8 +71,8 @@ theEnd;
         ?>
         
         <textarea id="textareaCode" name="htmlpage" rows="40" cols="80"><?php
-        $replace = array("\\n");
-        $find = array("\r\n");
+        $replace = array("\\n","&ltbr /&gt");
+        $find = array("\r\n","\r\n");
         //$textstr = str_replace($replace,$find,$rs2["htmlpage"]);
         $textstr = str_replace($replace,$find,$rs2str);
         echo $textstr;
@@ -109,7 +109,7 @@ function autodivheight(){
 function resetCode() {
   var initCode = "<?php 
     $find = array("<",">","\\\"");
-    $replace = array("&lt","&gt","&quot;");
+    $replace = array("&lt;","&gt;","&quot;");
     $htmlpage =str_replace($replace,$find,$rs2["htmlpage"]);
     echo $htmlpage;    
     ?>"
@@ -118,11 +118,8 @@ function resetCode() {
 
 function submitTryit(){
     var text = document.getElementById("textareaCode").value;
-    var text = document.getElementById("textareaCode").value;
-    var patternHtml = /<html[^>]*>((.|[\n\r])*)<\/html>/im
-    var patternHead = /<head[^>]*>((.|[\n\r])*)<\/head>/im
-    var array_matches_head = patternHead.exec(text);
-    var patternBody = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+    string = text.replace(/\r\n/g,"<br>")
+    string = text.replace(/\n/g,"<br>");
     
     var ifr = document.createElement("iframe");
     ifr.setAttribute("frameborder", "0");
@@ -132,7 +129,7 @@ function submitTryit(){
     
     var ifrw = (ifr.contentWindow) ? ifr.contentWindow : (ifr.contentDocument.document) ? ifr.contentDocument.document : ifr.contentDocument;
     ifrw.document.open();
-    ifrw.document.write(text);  
+    ifrw.document.write(string);  
     ifrw.document.close();
     autodivheight();
 

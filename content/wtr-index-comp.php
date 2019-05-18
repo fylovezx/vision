@@ -59,14 +59,16 @@ case "all":
         }
 break;
 case "book":
-    $sql = "SELECT `bkname`,`link` FROM $db.book where idbk =$id ";
+    $idbk = $id;
+    $sql = "SELECT `bkname`,`link` FROM $db.book where idbk =$idbk ";
+    
     $rsbk = $conne->getRowsRst($sql);
     $bkname = $rsbk['bkname'];
     $link = $rsbk['link'];
     echo "<div id=\"wtr-CtLoc\"><span onclick=\"AjaxWtrComp('all-0')\">书籍列表</span>->$bkname->";
     echo "<span title=\"新增章\" onclick=\"AjaxWtrNew('book-$id')\">+</span></div>";
 
-    $sql = "SELECT `idcp`, `cpname`, `cpsnum`, `idbk` , `link` FROM $db.chapter ORDER BY cpsnum";
+    $sql = "SELECT `idcp`, `cpname`, `cpsnum` , `link` FROM $db.chapter WHERE idbk=$idbk ORDER BY cpsnum";
     $rs = $conne->getRowsArray($sql);
     echo <<<wtrcompcbl
         <div id="wtr-comp-cbl" style="float:left">
