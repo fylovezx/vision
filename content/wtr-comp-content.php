@@ -36,9 +36,10 @@ case "book":
     给一个章列表，是插入章还是插入节 
     这里插入章，节在各章之中体现
     */
+    $idbk = $id;
     echo <<<THE
     <form action="" method="post">
-    <input type="text" name="stru" value="chapter" style="display:none"><input type="text" name="idbk" value="$id" style="display:none">
+    <input type="text" name="stru" value="chapter" style="display:none"><input type="text" name="idbk" value="$idbk" style="display:none">
     第<input type="text" name="cpsnum" >章 名称: <input type="text" name="cpname"><br>
     分配指向链接:<input type="text" name="link" placeholder="html-firstcp">
     <input type="submit" name="insertdata" value="新建章信息">
@@ -51,9 +52,10 @@ case "chapter":
     给一个章列表，是插入章还是插入节 
     这里插入章，节在各章之中体现
     */
+    $idcp = $id;
     echo <<<THE
     <form action="" method="post">
-    <input type="text" name="stru" value="section" style="display:none"><input type="text" name="idcp" value="$id" style="display:none">
+    <input type="text" name="stru" value="section" style="display:none"><input type="text" name="idcp" value="$idcp" style="display:none">
     第<input type="text" name="scsnum" >节 名称: <input type="text" name="scname"><br>
     分配指向链接:<input type="text" name="link" placeholder="html-firstcp">
     <input type="submit" name="insertdata" value="新建节信息">

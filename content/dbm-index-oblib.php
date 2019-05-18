@@ -18,6 +18,7 @@ echo <<<style
 <style>
 #dbm-content span{
     color:blue;
+    cursor:pointer;
     }
 </style>
 style;

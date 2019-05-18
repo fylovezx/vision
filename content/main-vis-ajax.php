@@ -1,6 +1,16 @@
 
 <?php
 session_start();
+/**
+ * book chapter section中重复太多需要修改
+ * stru 有四种可能性：
+ *  floor单独处理 
+ *  book chapter section 三个合并处理，只要通过他们的属性
+ *      获取idbk就可以统一获取书籍列表
+ * 注意floor中的主内容div叫maintext
+ *          其余的里面叫main-content-text
+ * 
+ */
 if(isset($_GET['struid'])){
     $_SESSION['pageinfo']['main-visit'] = $_GET['struid'];//由于有通过ajax方法过来，所以不能删
     $struid = $_GET['struid'];
@@ -9,7 +19,29 @@ if(isset($_GET['struid'])){
     echo "<script>alert('非法main-vis-ajax访问！'); window.location.href='main-login.php';</script>";
 
 }
+echo <<<style
+<style>
+#main-visit-cbl span{
+    color:blue;
+    cursor:pointer;
+}
+#maintext span{
+        cursor:pointer;
+        height:100px;
+        width:300px;
+        display:block;
+        float:left;
+        background-color:#f6f6f6;
+        margin:0px 20px 5px 0px;
+        border-radius:10px;
+        padding:0px 0px 0px 5px;
+}
+#maintext h2{
+    clear:both;
+}
 
+</style>
+style;
 echo '<div id="main-visit-cbl" style="float:left">';
 
 $connname = $_SESSION['userinfo']['connname'];
@@ -20,144 +52,141 @@ $struarray = explode("-",$struid);
 $stru = $struarray[0];
 $id = $struarray[1];
 
-switch ($stru){
-    case "all":
-        //---------all--------侧边栏-------读取书架目录 -------begin-----------------
-        $sql = "SELECT idsf,sfname FROM $db.shelf ORDER BY idfl,sfsnum ";
-        $rs = $conne->getRowsArray($sql);
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
-        getcmnt(array("wong","content","main-visit"),$rs);
-        echo "<div >1楼书架列表</div>\r\n";
-        foreach($rs as $section){
-                echo "<div>".$section["sfname"]."</div>\r\n";
-        }
-        //----------all-------侧边栏-------读取书架目录 -------end-----------------
-        echo '</div><div id="maintext" style="float:left">';
+if($stru=="floor"){
+    //---------all--------侧边栏-------读取书架目录 -------begin-----------------
+    $idfl =$id;
+    $sql = "SELECT idsf,sfname FROM $db.shelf WHERE idfl=$idfl  ORDER BY idfl,sfsnum ";
+    $rssf = $conne->getRowsArray($sql);
+    include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
+    getcmnt(array("wong","content","main-visit"),$rssf);
+    
+    echo "<div >$idfl 楼书架列表</div>\r\n";
+    foreach($rssf as $shelf){
+            echo "<div>".$shelf["sfname"]."</div>\r\n";
+    }
+    //----------all-------侧边栏-------读取书架目录 -------end-----------------
+    echo '</div><div id="maintext" style="float:left">';
 
-        //-----------all------正文栏-------读取所有书架中书本icon、intro、name等基本信息 -------begin-----------------
-        $sql = "SELECT idsf,idbk,bkname,bkicon,bkintro FROM wong.book ORDER BY idsf,idbk";
-        $rs2 = $conne->getRowsArray($sql);
-        getcmnt(array("wong","content","main-visit"),$rs2);
+    //-----------all------正文栏-------读取所有书架中书本icon、intro、name等基本信息 -------begin-----------------
+    $sql = "SELECT idsf,idbk,bkname,bkicon,bkintro FROM wong.book ORDER BY idsf,bksnum";
+    $rsbk = $conne->getRowsArray($sql);
+    getcmnt(array("wong","content","main-visit"),$rsbk);
 
-        /* 
-        这里需要整理一下，
-        从shelf中读取的数据是按照snum也就是序号排列的，
-        我们--book-- 中的数据需要根据--shelf--中--snum-- 的所对应的--id--顺序来读取
-        换个意思：
-        首先对--shelf--按照--snum--排序，获取--idshelf--的数组
-        然后--book--按照--idshelf--的顺序和--booksnum--排序
-        */
-        //1.对--shelf--按照--snum--排序,从数据库中读取出来已经排好了
-        //2.循环--idshelf--数组，在rs2中寻找对应--shelf--提取出来
-        $dispalyrs2=array();
-        $dispalysnum = array();
-        $dispalyrow = array();
-        foreach($rs as $section){
-            echo "<h2>".$section["sfname"]."</h2>\r\n<hr>";
-            foreach($rs2 as $learnbook){
-                if($learnbook["idsf"]==$section["idsf"]){
-                    $dispalyrs2[] = $learnbook;
-                }
-                //将得出的$dispalyrs2 按照snum排序
-                $j=1;
-                getcmnt(array("wong","content","main-visit"),$dispalyrs2);
-                for($i=0;$i<count($dispalyrs2);$i++){
-                    $diricon = $dispalyrs2[0]["bkicon"];
-                    $intro = $dispalyrs2[0]["bkintro"];
-                    $name = $dispalyrs2[0]["bkname"];
-                    $idbk = $dispalyrs2[0]["idbk"];
-                    if($j<3){
-        echo <<<learning
-                    <span onclick="AjaxVis('book-$idbk')"><h4>【 $name 】</h4>
-                    <img height="36" width="36" src="data/pic/icon/$diricon">
-                    <strong>$intro</strong></span>
-learning;
-                    $j++;
-                    }else{
-        echo <<<learning
-                        <span onclick="AjaxVis('book-$idbk')"><h4>【 $name 】</h4>
-                        <img height="36" width="36" src="data/$diricon">
-                        <strong>$intro</strong></span><br>
-learning;
-                    $j=1;
-                    }
-                }
-                $dispalyrs2=array();
-                $dispalysnum = array();
-                $dispalyrow = array();
+    /* 
+    这里需要整理一下，
+    从shelf中读取的数据是按照snum也就是序号排列的，
+    我们--book-- 中的数据需要根据--shelf--中--snum-- 的所对应的--id--顺序来读取
+    换个意思：
+    首先对--shelf--按照--snum--排序，获取--idshelf--的数组
+    然后--book--按照--idshelf--的顺序和--booksnum--排序
+    */
+    //1.对--shelf--按照--snum--排序,从数据库中读取出来已经排好了
+    //2.循环--idshelf--数组，在rs2中寻找对应--shelf--提取出来
+    $dispalyrsbk=array();
+    $dispalysnum = array();
+    $dispalyrow = array();
+    foreach($rssf as $shelf){
+        echo "<h2 >".$shelf["sfname"]."</h2>\r\n<hr>";
+        foreach($rsbk as $learnbook){
+            if($learnbook["idsf"]==$shelf["idsf"]){
+                $dispalyrsbk[] = $learnbook;
             }
+            //将得出的$dispalyrsbk 按照snum排序,在查询出来得时候已经排号序了
+            $j=1;
+            getcmnt(array("wong","content","main-visit"),$dispalyrsbk);
+            for($i=0;$i<count($dispalyrsbk);$i++){
+                $diricon = $dispalyrsbk[0]["bkicon"];
+                $intro = $dispalyrsbk[0]["bkintro"];
+                $name = $dispalyrsbk[0]["bkname"];
+                $idbk = $dispalyrsbk[0]["idbk"];
+                if($j<3){
+    echo <<<learning
+                <span onclick="AjaxVis('book-$idbk')"><strong style="font-size:20px">【 $name 】</strong><br>
+                <img height="50" width="50" src="data/pic/icon/$diricon" style="float:left">
+                <div style="float:right;width:240px;"><strong >$intro</strong></div></span>
+learning;
+                $j++;
+                }else{
+    echo <<<learning
+                <span onclick="AjaxVis('book-$idbk')"><strong style="font-size:20px">【 $name 】</strong><br>
+                <img height="50" width="50" src="data/$diricon" style="float:left">
+                <div style="float:right;width:240px;"><strong >$intro</strong></div></span><br>
+learning;
+                $j=1;
+                }
+            }
+            $dispalyrsbk=array();
+            $dispalysnum = array();
+            $dispalyrow = array();
         }
-        //--------all---------正文栏-------读取所有书架中书本icon、intro、name等基本信息 -------end-----------------
-        echo "</div>  \r\n";
-    break;
-    case "book":
-        //-------book----------侧边栏-------读取章节目录 -------begin-----------------
-        $idbk = $id;
-        $bkname = $conne->getFields("SELECT bkname FROM $db.book WHERE idbk=$idbk",'bkname');
-        if(!empty($bkname)){
-            echo "<div>$bkname 目录</div>\r\n";
-        }else{
-            echo "<div>标识为$idbk 的书不存在</div>\r\n";
-        }
-        $rs = $conne->getRowsArray("SELECT idcp,cpname FROM $db.chapter WHERE idbk = $idbk ORDER BY cpsnum ");
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
-        getcmnt(array("wong","content","main-visit"),$rs);
-        echo "<div><span onclick=\"AjaxVis('book-$idbk')\">前言</span></div>\r\n";
-        foreach($rs as $chapter){
-            $idcp2 = $chapter['idcp'];
-            $cpname =$chapter['cpname'];
-            echo "<div><span onclick=\"AjaxVis('chapter-$idcp2')\">$cpname</div>\r\n";
-        }
-        //--------book---------侧边栏-------读取章节目录 -------end-----------------
-        //--------book---------正文栏-------读取书本前言 -------begin-----------------
-        echo '</div><div id="maintext" style="float:left">';
-        $rs= $conne->getRowsRst("SELECT link FROM $db.book WHERE idbk = $idbk");
-        $link = $rs['link'];
-        $rs2= $conne->getRowsRst("SELECT htmlpage FROM $db.htmlpage WHERE link='$link'");
-        //$rsstr1 = $rs["code"];
-        $rs2str = $rs2["htmlpage"];
-        $find = array("<",">","\\\"");
-        $replace = array("&lt","&gt","&quot;");
-        $code =str_replace($replace,$find,$rs2str);
-        echo $code;
-        echo "</div>  \r\n";
-        //--------book---------正文栏-------读取书本前言 -------end-----------------
-    break;
-    case "chapter":
-        //-------chapter----------侧边栏-------读取章节目录 -------begin-----------------
-        $idcp = $id;
-        $rsbk = $conne->getRowsRst("SELECT idbk from $db.chapter where idcp=$idcp");
-        $idbk = $rsbk['idbk'];
-        $bkname = $conne->getFields("SELECT bkname FROM $db.book WHERE idbk=$idbk",'bkname');
-        if(!empty($bkname)){
-            echo "<div>$bkname 目录</div>\r\n";
-        }else{
-            echo "<div>标识为$idbk 的书不存在</div>\r\n";
-        }
-        $rs = $conne->getRowsArray("SELECT idcp,cpname FROM $db.chapter WHERE idbk = $idbk ORDER BY cpsnum ");
-        include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
-        getcmnt(array("wong","content","main-visit"),$rs);
-        echo "<div><span onclick=\"AjaxVis('book-$idbk')\">前言</span></div>\r\n";
-        foreach($rs as $chapter){
-            $idcp2 = $chapter['idcp'];
-            $cpname =$chapter['cpname'];
-            echo "<div><span onclick=\"AjaxVis('chapter-$idcp2')\">$cpname</div>\r\n";
-        }
-        //--------chapter---------侧边栏-------读取章节目录 -------end-----------------
-        //--------chapter---------正文栏-------读取章信息 -------begin-----------------
-        echo '</div><div id="maintext" style="float:left">';
-        $rs= $conne->getRowsRst("SELECT link FROM $db.chapter WHERE idcp = $idcp");
-        $link = $rs['link'];
-        $rs2= $conne->getRowsRst("SELECT htmlpage FROM $db.htmlpage WHERE link='$link'");
-        //$rsstr1 = $rs["code"];
-        $rs2str = $rs2["htmlpage"];
-        $find = array("<",">","\\\"");
-        $replace = array("&lt","&gt","&quot;");
-        $code =str_replace($replace,$find,$rs2str);
-        echo $code;  
-        echo "</div>  \r\n";
-        //--------chapter---------正文栏-------读取章信息 -------end-----------------
-break;
+    }
+    //--------all---------正文栏-------读取所有书架中书本icon、intro、name等基本信息 -------end-----------------
+    echo "</div>  \r\n";
+}else{
+    //得到$id求得$bkid然后同意获取书本的章节信息
+    switch ($stru){
+        case "book":
+            $idbkLoc = $id;
+            $rsbk= $conne->getRowsRst("SELECT link FROM $db.book WHERE idbk = $idbkLoc");
+            $linkLoc = $rsbk['link'];
+        break;
+        case "chapter":
+            $idcpLoc = $id;
+            $rscp = $conne->getRowsRst("SELECT idbk,link from $db.chapter where idcp=$idcpLoc");
+            $idbkLoc = $rscp['idbk'];
+            $linkLoc = $rscp['link'];
+        break;
+        case "section":
+            $idscLoc = $id;
+            $rssc = $conne->getRowsRst("SELECT idcp,link from $db.section where idsc=$idscLoc");
+            $idcpLoc = $rssc['idcp'];
+            $linkLoc = $rssc['link'];
+            $rscp = $conne->getRowsRst("SELECT idbk from $db.chapter where idcp=$idcpLoc");
+            $idbkLoc = $rscp['idbk'];            
+        break;
+    }
+                //-------book----------侧边栏-------读取章节目录 -------begin-----------------
+                $bkname = $conne->getFields("SELECT bkname FROM $db.book WHERE idbk=$idbkLoc",'bkname');
+                if(!empty($bkname)){
+                    echo "<div>$bkname 目录</div>\r\n";
+                    $rscp = $conne->getRowsArray("SELECT idcp,cpname,cpsnum FROM $db.chapter WHERE idbk = $idbkLoc ORDER BY cpsnum ");
+                    include_once $_SERVER['DOCUMENT_ROOT'].'/tools/debug.php';
+                    getcmnt(array("wong","content","main-visit"),$rscp);
+                    echo "<div><span onclick=\"AjaxVis('book-$idbkLoc')\">前言</span></div>\r\n";
+                    foreach($rscp as $chapter){
+                        $cpname =$chapter['cpname'];
+                        $idcp = $chapter['idcp'];
+                        
+                        $cpsnum = $chapter["cpsnum"];
+                        echo "<div><span onclick=\"AjaxVis('chapter-$idcp')\">$cpsnum-$cpname</span>";
+                        //写入节信息
+                        $sqlsc = "SELECT `idsc`,`scname`, `scsnum` , `link` FROM $db.section WHERE idcp=$idcp ORDER BY scsnum";
+                        $rssc = $conne->getRowsArray($sqlsc);
+                        foreach($rssc as $section){
+                            $scname =$section['scname'];
+                            $scsnum =$section['scsnum'];
+                            $linksc =$section['link'];
+                            $idsc =$section['idsc'];
+                            echo "<br><span onclick=\"AjaxVis('section-$idsc')\" >$cpsnum.$scsnum-$scname</span>\r\n";
+                        }
+                        echo "</div>\r\n";
+                    }
+                }else{
+                    echo "<div>标识为$idbk 的书不存在</div>\r\n";
+                }                
+                //--------book---------侧边栏-------读取章节目录 -------end-----------------
+                //--------book---------正文栏-------读取当前link对应的页 -------begin-----------------
+                echo '</div><div id="main-content-text" style="float:left">';
+                $rslink= $conne->getRowsRst("SELECT htmlpage FROM $db.htmlpage WHERE link='$linkLoc'");
+                $rslinkstr = $rslink["htmlpage"];
+                $find = array("<",">","\\\"");
+                $replace = array("&lt","&gt","&quot;");
+                $code =str_replace($replace,$find,$rslinkstr);
+                echo $code;
+                echo "</div>  \r\n";
+                //--------book---------正文栏-------读取当前link对应的页 -------end-----------------
 }
+
+
 
 ?>

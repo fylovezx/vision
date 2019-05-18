@@ -24,6 +24,7 @@ echo <<<style
 <style>
 #wtr-content span{
     color:blue;
+    cursor:pointer;
     }
 </style>
 style;
@@ -80,7 +81,18 @@ wtrcompcbl;
                 $cpname = $chapter["cpname"];
                 $idcp = $chapter["idcp"];
                 $link = $chapter["link"];
-                echo "<div><span  onclick=\"AjaxWtrVis('$link')\">$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span></div>\r\n";
+                $cpsnum = $chapter["cpsnum"];
+                echo "<div><span  onclick=\"AjaxWtrVis('$link')\">$cpsnum-$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span>\r\n";
+                //写入节信息
+                $sqlsc = "SELECT `scname`, `scsnum` , `link` FROM $db.section WHERE idcp=$idcp ORDER BY scsnum";
+                $rssc = $conne->getRowsArray($sqlsc);
+                foreach($rssc as $section){
+                    $scname =$section['scname'];
+                    $scsnum =$section['scsnum'];
+                    $linksc =$section['link'];
+                    echo "<br><span  onclick=\"AjaxWtrVis('$linksc')\">$cpsnum.$scsnum-$scname</span>\r\n";
+                }
+                echo "</div>";
             }
             echo "</div>";
         }else{

@@ -81,6 +81,25 @@ switch ($stru){
         $conne->close_conn();
 
     break;
+    case "section":
+
+    $idcp = $dataarray['idcp'];
+    $scname =$dataarray['scname'];
+    $scsnum =$dataarray['scsnum'];
+    $link =$dataarray['link'];
+
+    $sqlzlxh="UPDATE `$db`.`section` SET `scsnum` = `scsnum`+1 WHERE `scsnum` >=$scsnum and `idcp`=$idcp;";
+    $sqlcrbk="INSERT INTO `$db`.`section` (`scname`, `idcp`, `scsnum` , `link` ) ";
+    $sqlcrbk .=" VALUES ('$scname', $idcp, $scsnum, '$link');";
+    $rsnum = array();
+    $rsnum[] =$conne->uidRst($sqlzlxh);//这条语句应当是用来整理序号
+    $rsnum[] =$conne->uidRst($sqlcrbk);
+    $sqlzlxh=null;
+    $sqlcrbk=null;
+    //section级别不写入日志
+    $conne->close_conn();
+
+    break;
 }
 
 

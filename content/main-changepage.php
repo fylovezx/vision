@@ -10,7 +10,7 @@ if(isset($_GET['page'])){
 switch ($page){
     case "index":
     $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
-    $_SESSION['pageinfo']['main-visit'] ='all-0';
+    $_SESSION['pageinfo']['main-visit'] ='floor-1';
     break;
     case "dbm-index":
         $_SESSION['pageinfo']['CtLoc']='dbm-index';

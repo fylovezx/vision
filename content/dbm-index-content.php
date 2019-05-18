@@ -21,6 +21,7 @@ echo <<<opbd
         <style>
         #opdbmenu span{
             color:green;
+            cursor:pointer;
             }
         </style>
         <span id="skpl" onclick="AjaxDbmOpdb(this)" onmouseover="DbmOpdbTipin('操作提示：删除数据库,将失去所有数据,在此操作前请确认铺盖已卷好！')" onmouseout="DbmOpdbTipinout()">删库跑路</span>

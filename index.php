@@ -26,7 +26,7 @@ if(!isset($_SESSION['userinfo']))
         "connname" =>'wongvis',
     );
     $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
-    $_SESSION['pageinfo']['main-visit'] ='all-0';
+    $_SESSION['pageinfo']['main-visit'] ='floor-1';
 }
 
 ?>
