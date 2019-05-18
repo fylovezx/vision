@@ -54,7 +54,7 @@ theEnd;
             <button id="btn-default" type="button" onclick="resetCode()" class="btn btn-default">源代码(<u>Y</u>)</button>
         </div>
         <div style="float:right">
-            <button id="btn-runing" type="button" onclick="submitTryit()" id="submitBTN"><span class="glyphicon glyphicon-send"></span> 点击运行(<u>R</u>un)</button>
+            <button id="btn-runing" type="button" onclick="submitTryit()" id="submitBTN"><span class="glyphicon glyphicon-send"></span> 查看预览(<u>R</u>un)</button>
         </div>
     </div>
     <div>
@@ -70,7 +70,7 @@ theEnd;
         echo "<input type=\"text\" name=\"link\" value=\"$link\" style=\"display:none\">";
         ?>
         
-        <textarea id="textareaCode" name="htmlpage" rows="40" cols="80"><?php
+        <textarea id="textareaCode" name="htmlpage" rows="40" cols="80" oninput="submitTryit()"><?php
         $replace = array("\\n","&ltbr /&gt");
         $find = array("\r\n","\r\n");
         //$textstr = str_replace($replace,$find,$rs2["htmlpage"]);
