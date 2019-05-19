@@ -8,9 +8,11 @@ if(isset($_GET['page'])){
 }
 //其实也可以通过ajax访问主页
 switch ($page){
-    case "index":
+    case "main-visit":
     $_SESSION['pageinfo']['CtLoc']='main-visit';//这里后面要根据权限修改为主页
-    $_SESSION['pageinfo']['main-visit'] ='floor-1';
+    if(!isset($_SESSION['pageinfo']['main-visit'])){
+        $_SESSION['pageinfo']['main-visit']='floor-1';//不能删，否则无法通过main-div-nav切换
+    }
     break;
     case "dbm-index":
         $_SESSION['pageinfo']['CtLoc']='dbm-index';

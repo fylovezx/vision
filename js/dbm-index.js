@@ -98,3 +98,70 @@ function DbmOpdbTipinout() {
     showDiv.style.color='';
     showDiv.innerHTML = '操作提示：无';
 }
+
+
+function chksfin(form){
+    var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 
+　　 var nubmer = form.sfsnum.value;
+
+　　if (!re.test(nubmer)) {
+　　　　alert("请在书架序号内输入数字");
+　　　　form.sfsnum.select();
+　　　　return false;
+　　}
+
+    if(form.sfname.value==""){
+        alert("请输入书架名称!");
+        form.sfname.select();
+        return(false);
+    }
+
+    if(form.link.value==""){
+        alert("请输入指向的链接!");
+        form.link.select();
+        return(false);
+    }
+   return(true);
+   
+  }
+
+  function chkbkin(form){
+    var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 
+　　 var nubmer = form.bksnum.value;
+
+　　if (!re.test(nubmer)) {
+　　　　alert("请在书籍序号内输入数字");
+　　　　form.bksnum.select();
+　　　　return false;
+　　}
+
+    if(form.bkname.value==""){
+        alert("请输入书籍名称!");
+        form.bkname.select();
+        return(false);
+    }
+    
+    if(form.bkicon.value=="" || form.bkicon.value== null){
+        alert("请选择上传的ico!");
+        form.bkicon.select();
+        return(false);
+
+    }
+
+    if(form.bkintro.value==""){
+        alert("请输入书本的简介!");
+        form.bkintro.select();
+        return(false);
+
+    }
+
+    var reg = /^[0-9a-zA-Z]+$/
+    var linkprefix = form.linkprefix.value;
+    if(!reg.test(linkprefix) || form.linkprefix.value==""){
+    alert("你输入的链接前缀不是数字或者字母");
+    form.link.select();
+    return(false);
+    }
+   return(true);
+   
+  }

@@ -41,6 +41,7 @@ if(!isset($_SESSION['userinfo']))
     <link type="text/css" rel="stylesheet"  href="css/main-login.css" />
     <link type="text/css" rel="stylesheet"  href="css/dbm-index.css" />
     <link type="text/css" rel="stylesheet"  href="css/wtr-index.css" />
+    <script src="js/index.js"></script>
     <script src="js/dbm-index.js"></script>
     <script src="js/wtr-index.js"></script>
     <script src="js/vis-index.js"></script>
@@ -56,23 +57,39 @@ if(!isset($_SESSION['userinfo']))
     ?>
 </div>
 
-<div id = "main-content">
+<div >
+    <div id = "main-content" style="float:left">
+        <?php 
+    /*     
+        ajax优点：
+            可以不用重新载入index页面
+                但是功能上的切换还是需要重新载入好一点
+                这里需要设置一个中转的页面用于调度
+        include:
+            可以使用js文件
+            这里用include就没有办法通过main-div-nav进行跳转
+            include也可用通过span内的<a>标签进行切换，不过需要一个页面中转
+    */
+            $ctpage=$_SESSION['pageinfo']['CtLoc'];
+            include "content/$ctpage.php";
+        ?>
+    </div>
     <?php 
-/*     
-    ajax优点：
-        可以不用重新载入index页面
-            但是功能上的切换还是需要重新载入好一点
-            这里需要设置一个中转的页面用于调度
-    include:
-        可以使用js文件
-        这里用include就没有办法通过main-div-nav进行跳转
-        include也可用通过span内的<a>标签进行切换，不过需要一个页面中转
-*/
-        $ctpage=$_SESSION['pageinfo']['CtLoc'];
-        include "content/$ctpage.php";
-    ?>
-</div>
+    if($_SESSION['userinfo']['userid']==0){
 
+    }else{
+        echo <<<hispage
+        <div style="float:left">
+        <span style="color:dodgerblue" onclick="AjaxRefHist()">历史记录(点击刷新)</span>
+        <div id = "main-hispage"></div>
+    </div>
+    <script>
+    AjaxRefHist();
+    </script>
+hispage;
+    }
+?>
+</div>
 <div style="clear:both;">
     <?php  
     include_once $_SERVER['DOCUMENT_ROOT'].'/tools/advergers.php'; givemewords($advergerswords,"Tony");

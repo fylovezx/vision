@@ -176,7 +176,7 @@ learning;
                 }                
                 //--------book---------侧边栏-------读取章节目录 -------end-----------------
                 //--------book---------正文栏-------读取当前link对应的页 -------begin-----------------
-                echo '</div><div id="main-content-text" style="float:left">';
+                echo '</div><div id="main-content-text" style="float:left;background-color:#e7e7e7;width:700px;" >';
                 $rslink= $conne->getRowsRst("SELECT htmlpage FROM $db.htmlpage WHERE link='$linkLoc'");
                 $rslinkstr = $rslink["htmlpage"];
                 $find = array("<",">","\\\"");

@@ -11,7 +11,7 @@ switch ($stru){
     case "shelf":
         $sfname = $dataarray['sfname'];
         $sfsnum = $dataarray['sfsnum'];
-        $idfl =1;
+        $idfl = $dataarray['idfl'];
         $sqlzlxh="UPDATE `$db`.`shelf` SET `sfsnum` = `sfsnum`+1 WHERE `sfsnum` >=$sfsnum and `idfl`=$idfl;";
         $sqlcrsf="INSERT INTO `$db`.`shelf` (`sfname`, `idfl`, `ctime`,`sfsnum`) VALUES ('$sfname', $idfl, '$mysqltime', $sfsnum );";
         $rsnum = array();
@@ -34,7 +34,7 @@ switch ($stru){
         $bksnum =$dataarray['bksnum'];
         $bkintro =$dataarray['bkintro'];
         $bkicon = $_FILES['bkicon']['name'];
-        $link =$dataarray['link'];
+        $link =$dataarray['linkprefix']."-foreword";
 
         $dir = 'data/pic/icon/';
         $path = $dir.$_FILES['bkicon']['name'];

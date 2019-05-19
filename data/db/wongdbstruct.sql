@@ -18,7 +18,7 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for book 1-7table
+-- Table structure for book 1-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book`  (
@@ -34,7 +34,7 @@ CREATE TABLE `book`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 100001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用来存储第二个层级' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for chapter 2-7table
+-- Table structure for chapter 2-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `chapter`;
 CREATE TABLE `chapter`  (
@@ -47,7 +47,17 @@ CREATE TABLE `chapter`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '指向与序列号之间的关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for htmlpage 3-7table
+-- Table structure for hispage 3-8table
+-- ----------------------------
+DROP TABLE IF EXISTS `hispage`;
+CREATE TABLE `hispage`  (
+  `time` datetime(0) NOT NULL,
+  `userid` int(11) NOT NULL COMMENT '防止重名，用户id',
+  `adr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '浏览历史' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for htmlpage 4-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `htmlpage`;
 CREATE TABLE `htmlpage`  (
@@ -57,7 +67,7 @@ CREATE TABLE `htmlpage`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '存储正文的链接和内容' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for section 4-7table
+-- Table structure for section 5-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section`  (
@@ -70,7 +80,7 @@ CREATE TABLE `section`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表示节' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for shelf 5-7table
+-- Table structure for shelf 6-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `shelf`;
 CREATE TABLE `shelf`  (
@@ -83,7 +93,7 @@ CREATE TABLE `shelf`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '把数据库当成图书馆，这个代表楼层，每一floor层楼放不同类型的知识，每一层有若干的shelf' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for opliblog 6-7table
+-- Table structure for opliblog 7-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `opliblog`;
 CREATE TABLE `opliblog`  (
@@ -94,7 +104,7 @@ CREATE TABLE `opliblog`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书库管理日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for try 7-7table
+-- Table structure for try 8-8table
 -- ----------------------------
 DROP TABLE IF EXISTS `try`;
 CREATE TABLE `try`  (
