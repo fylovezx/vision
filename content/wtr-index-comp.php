@@ -13,6 +13,7 @@ $struid = $_GET['struid'];
     //这种情况属于非法进入，应当直接予以退出处理
     echo "<script>alert('非法访问wtr-index-comp.php！'); window.location.href='main-login.php';</script>";
 }
+//这里提供历史页面的信息
 $_SESSION['pageinfo']['wtr-index'] =$struid;//Ajax引入的所以需要赋值，方便刷新回到这里
 $struarray = explode("-",$struid);
 $stru = $struarray[0];
@@ -20,6 +21,7 @@ $id = $struarray[1];
 $connname = $_SESSION['userinfo']['connname'];
 include_once $_SERVER['DOCUMENT_ROOT'].'/tools/conn.php';setconnparm($conne,$connname);
 $db=$conne->getconneinfo('dBase'); 
+
 echo <<<style
 <style>
 #wtr-content span{
@@ -32,6 +34,10 @@ switch ($stru)
 {
 case "all":
     //读取数据库中所有与本权限相关的书目
+    //写入历史记录--begin--
+    $_SESSION['include'] = "wtr:全部可编书籍";
+    include_once "main-hispage-update.php";
+    //写入历史记录--end--
     $sql = "SELECT `idbk`, `ctime`, `bkname`, `bksnum` FROM $db.book ORDER BY idbk";
     $rs = $conne->getRowsArray($sql);
         if(count($rs)){
@@ -62,27 +68,31 @@ break;
 case "book":
     $idbk = $id;
     $sql = "SELECT `bkname`,`link` FROM $db.book where idbk =$idbk ";
-    
     $rsbk = $conne->getRowsRst($sql);
     $bkname = $rsbk['bkname'];
-    $link = $rsbk['link'];
+    //写入历史记录--begin--
+    $_SESSION['include'] = "wtr-bk:$bkname";
+    include_once "main-hispage-update.php";
+    //写入历史记录--end--
+    $linkbk = $rsbk['link'];
     echo "<div id=\"wtr-CtLoc\"><span onclick=\"AjaxWtrComp('all-0')\">书籍列表</span>->$bkname->";
     echo "<span title=\"新增章\" onclick=\"AjaxWtrNew('book-$id')\">+</span></div>";
 
     $sql = "SELECT `idcp`, `cpname`, `cpsnum` , `link` FROM $db.chapter WHERE idbk=$idbk ORDER BY cpsnum";
     $rs = $conne->getRowsArray($sql);
+    //-------------------侧边栏：章节信息--------------------------begin----------------
     echo <<<wtrcompcbl
         <div id="wtr-comp-cbl" style="float:left">
-        <div><span  onclick="AjaxWtrVis('$link')">前言</span></div>\r\n
+        <div><span  onclick="AjaxWtrVis('$linkbk')">前言</span></div>\r\n
 wtrcompcbl;
-        $_SESSION['ajax'] = array('wtr-comp-content', "link-".$link);
+        $_SESSION['ajax'] = array('wtr-comp-content', "link-".$linkbk);
         if(count($rs)){
             foreach($rs as $chapter){
                 $cpname = $chapter["cpname"];
                 $idcp = $chapter["idcp"];
-                $link = $chapter["link"];
+                $linkcp = $chapter["link"];
                 $cpsnum = $chapter["cpsnum"];
-                echo "<div><span  onclick=\"AjaxWtrVis('$link')\">$cpsnum-$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span>\r\n";
+                echo "<div><span  onclick=\"AjaxWtrVis('$linkcp')\">$cpsnum-$cpname</span><span  title=\"新增节\" onclick=\"AjaxWtrNew('chapter-$idcp')\">+</span>\r\n";
                 //写入节信息
                 $sqlsc = "SELECT `scname`, `scsnum` , `link` FROM $db.section WHERE idcp=$idcp ORDER BY scsnum";
                 $rssc = $conne->getRowsArray($sqlsc);
@@ -99,7 +109,8 @@ wtrcompcbl;
             echo "</div>";
             $_SESSION['ajax'] = array('wtr-comp-content', "book-$id");
         }
-        echo '<div id="wtr-comp-content">';
+        //-------------------侧边栏：章节信息--------------------------end----------------
+        echo '<div id="wtr-comp-content" style="float:left">';
         include 'wtr-comp-content.php';
         echo '</div>';
 break;

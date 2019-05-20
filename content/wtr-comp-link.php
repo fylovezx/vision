@@ -70,7 +70,7 @@ theEnd;
         echo "<input type=\"text\" name=\"link\" value=\"$link\" style=\"display:none\">";
         ?>
         
-        <textarea id="textareaCode" name="htmlpage" rows="40" cols="80" oninput="submitTryit()"><?php
+        <textarea id="textareaCode" name="htmlpage" rows="40" cols="80" oninput="txtainput()"><?php
         $replace = array("\\n","&ltbr /&gt");
         $find = array("\r\n","\r\n");
         //$textstr = str_replace($replace,$find,$rs2["htmlpage"]);
@@ -134,6 +134,12 @@ function submitTryit(){
     autodivheight();
 
 
+}
+
+
+function txtainput(){
+    submitTryit();
+    document.getElementsByName("subhtmlpage")[0].style.background="red";
 }
 submitTryit();
 autodivheight();

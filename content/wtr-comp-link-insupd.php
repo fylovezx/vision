@@ -27,11 +27,13 @@ if(isset($_POST['subhtmlpage'])){
         $sql = "UPDATE $db.htmlpage SET htmlpage = '$textstr' WHERE link='$link'; ";
     }    
     $num =$conne->uidRst($sql);
+    echo "wtr-comp-link-insupd.php出错"."<br>";
     echo $sql."<br>";
     echo $num."<br>";
 
     if($num==0){
-        echo "<script>alert('修改".$sql."失败".$conne->msg_error()."'); window.location.href='wtr-comp-link.php?link=$link';</script>";
+        print_r($conne->msg_error());
+        echo "<script>alert('修改".$sql."失败'); window.location.href='wtr-comp-link.php?link=$link';</script>";
     }else{
         echo "<script>alert('修改成功'); window.location.href='wtr-comp-link.php?link=$link';</script>";
     }

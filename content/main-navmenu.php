@@ -1,5 +1,5 @@
 
-<span id="mian-navmenu-index"  ><a href="content/main-changepage.php?page=main-visit">首页</a></span> 
+<span id="mian-navmenu-index"  ><a href="content/main-changepage.php?page=main-visit&in=floor-1">首页</a></span> 
 
 <?php
 

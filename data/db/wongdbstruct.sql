@@ -53,7 +53,8 @@ DROP TABLE IF EXISTS `hispage`;
 CREATE TABLE `hispage`  (
   `time` datetime(0) NOT NULL,
   `userid` int(11) NOT NULL COMMENT '防止重名，用户id',
-  `adr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址'
+  `adr` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址用;隔开',
+  `mark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用于方便用户观看'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '浏览历史' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

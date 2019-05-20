@@ -132,17 +132,20 @@ learning;
         break;
         case "chapter":
             $idcpLoc = $id;
-            $rscp = $conne->getRowsRst("SELECT idbk,link from $db.chapter where idcp=$idcpLoc");
+            $rscp = $conne->getRowsRst("SELECT cpname,idbk,link from $db.chapter where idcp=$idcpLoc");
             $idbkLoc = $rscp['idbk'];
+            $cpnameLoc = $rscp['cpname'];
             $linkLoc = $rscp['link'];
         break;
         case "section":
             $idscLoc = $id;
-            $rssc = $conne->getRowsRst("SELECT idcp,link from $db.section where idsc=$idscLoc");
+            $rssc = $conne->getRowsRst("SELECT scname,idcp,link from $db.section where idsc=$idscLoc");
             $idcpLoc = $rssc['idcp'];
             $linkLoc = $rssc['link'];
-            $rscp = $conne->getRowsRst("SELECT idbk from $db.chapter where idcp=$idcpLoc");
-            $idbkLoc = $rscp['idbk'];            
+            $scnameLoc = $rssc['scname'];
+            $rscp = $conne->getRowsRst("SELECT cpname,idbk from $db.chapter where idcp=$idcpLoc");
+            $idbkLoc = $rscp['idbk'];  
+            $cpnameLoc = $rscp['cpname'];          
         break;
     }
                 //-------book----------侧边栏-------读取章节目录 -------begin-----------------
@@ -185,6 +188,24 @@ learning;
                 echo $code;
                 echo "</div>  \r\n";
                 //--------book---------正文栏-------读取当前link对应的页 -------end-----------------
+    //写入历史记录--begin--
+    switch ($stru){
+        case "book":
+            $_SESSION['include'] = "浏览:$bkname 前言";
+        break;
+        case "chapter":
+            $_SESSION['include'] = "浏览:$bkname-$cpnameLoc";
+        break;
+        case "section":
+            $_SESSION['include'] = "浏览:$bkname-$cpnameLoc-$scnameLoc";
+        break;
+    }
+    include_once "main-hispage-update.php";
+    //写入历史记录--end--           
+                
+                
+                
+
 }
 
 
