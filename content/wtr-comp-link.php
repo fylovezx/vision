@@ -37,6 +37,7 @@ echo <<<theEnd
     function accesskey(){
       document.getElementById('btn-default').accessKey="y"
       document.getElementById('btn-runing').accessKey="r"
+      document.getElementById('subhtmlpage').accessKey="s"
     }
     </script>
 </head>
@@ -77,7 +78,7 @@ theEnd;
         $textstr = str_replace($replace,$find,$rs2str);
         echo $textstr;
         ?></textarea>
-        <input type="submit" name="subhtmlpage" value="提交至数据库">
+        <input type="submit" id="subhtmlpage" name="subhtmlpage" value="提交(S)">
 </form>
     </div>
 </div>
